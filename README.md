@@ -1,4 +1,4 @@
-# CNN *from scratch* vs Transfer Learning (EfficientNet-B0) — Cats vs Dogs
+# CNN *from scratch* vs Transfer Learning (EfficientNet-B0) sur Cats vs Dogs
 
 Projet de TP (Deep Learning, **Dakar Institute of Technology**) comparant un
 **CNN entraîné from scratch** et un modèle en **transfer learning**
@@ -147,7 +147,7 @@ Le notebook est organisé en deux parties :
 
 ```
 cnn-cats-vs-dogs/
-├─ TP_CatsVsDogs_JosiasAHOGA.ipynb   # notebook complet (données + TP + analyse)
+├─ TP_CatsVsDogs_JosiasAHOGA.ipynb   # notebook 
 ├─ README.md                         # présentation, résultats, reproduction
 ├─ requirements.txt                  # dépendances Python
 ├─ .gitignore                        # exclut données, modèles (.pth), logs, caches
