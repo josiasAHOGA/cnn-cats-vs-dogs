@@ -55,13 +55,9 @@ Pour installer les dépendances en local :
 pip install -r requirements.txt
 ```
 
-```bash
-pip install torch torchvision scikit-learn matplotlib pandas
-```
-
 Bibliothèques principales : PyTorch, torchvision, scikit-learn, matplotlib,
-pandas. Le code détecte automatiquement le GPU (CUDA) ; à défaut il tourne sur
-CPU (beaucoup plus lent).
+pandas, tensorboard. Le code détecte automatiquement le GPU (CUDA) ; à défaut il
+tourne sur CPU (beaucoup plus lent).
 
 ---
 
@@ -150,10 +146,12 @@ Le notebook est organisé en deux parties :
 ## Structure du dépôt
 
 ```
-.
-├─ TP_CatsVsDogs_JosiasAHOGA.ipynb   # notebook complet (cours + TP)
-├─ README.md
-└─ .gitignore                        # exclut données, modèles, caches
+cnn-cats-vs-dogs/
+├─ TP_CatsVsDogs_JosiasAHOGA.ipynb   # notebook complet (données + TP + analyse)
+├─ README.md                         # présentation, résultats, reproduction
+├─ requirements.txt                  # dépendances Python
+├─ .gitignore                        # exclut données, modèles (.pth), logs, caches
+└─ LICENSE                           # licence MIT
 ```
 
 ---
