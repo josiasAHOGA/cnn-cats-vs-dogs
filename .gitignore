@@ -1,0 +1,21 @@
+# Données (volumineuses, ne pas versionner)
+Cat_Dog_data/
+*.zip
+
+# Modèles entraînés
+*.pt
+*.pth
+
+# Caches Python / Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Logs et sorties
+runs/
+*.log
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
