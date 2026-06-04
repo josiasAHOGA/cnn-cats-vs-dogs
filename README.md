@@ -1,8 +1,8 @@
-# CNN *from scratch* vs Transfer Learning — Cats vs Dogs
+# CNN *from scratch* vs Transfer Learning (EfficientNet-B0) — Cats vs Dogs
 
 Projet de TP (Deep Learning, **Dakar Institute of Technology**) comparant un
-**CNN entraîné from scratch** et un modèle en **transfer learning** (ResNet18
-pré-entraîné sur ImageNet) sur le jeu de données **Cats vs Dogs**.
+**CNN entraîné from scratch** et un modèle en **transfer learning**
+(EfficientNet-B0 pré-entraîné sur ImageNet) sur le jeu de données **Cats vs Dogs**.
 
 **Auteur : Josias AHOGA**
 
@@ -15,8 +15,8 @@ transfert sur la convergence, la performance et la robustesse :
 
 - **Expérience A** : CNN construit et entraîné *from scratch* (4 blocs de
   convolution, BatchNorm + Dropout).
-- **Expérience B** : transfer learning avec ResNet18 pré-entraîné, dont la
-  couche finale est adaptée à 2 classes.
+- **Expérience B** : transfer learning avec EfficientNet-B0 pré-entraîné, dont la
+  couche finale est adaptée à 2 classes, avec fine-tuning progressif.
 
 Les métriques (loss, accuracy, précision, recall) sont suivies à chaque époque,
 sur train et validation. Deux optimiseurs sont testés (Adam et SGD), un
@@ -28,29 +28,32 @@ confusion est tracée.
 
 ## Résultats obtenus
 
-| Expérience | Époques | Meilleure val accuracy |
+| Expérience | Stratégie | Meilleure val accuracy |
 |---|---|---|
-| CNN from scratch + Adam | 25 | 0.9353 |
-| CNN from scratch + SGD | 25 | 0.7993 |
-| Transfer learning (ResNet18) + Adam | 10 | 0.9780 |
-| Transfer learning (ResNet18) + SGD | 10 | 0.9782 |
+| CNN from scratch + Adam | MixUp, 25 ép. | 0.9524 |
+| CNN from scratch + SGD | MixUp, 25 ép. | 0.9200 |
+| EfficientNet-B0 + Adam | fine-tuning progressif | 0.9844 |
+| EfficientNet-B0 + SGD | fine-tuning progressif | 0.9798 |
 
 **Test final** (meilleur modèle rechargé, 2500 images de test) :
-**accuracy = précision = recall = 0.9784**.
-Matrice de confusion : 1226 chats et 1220 chiens correctement classés, pour
-seulement 54 erreurs sur 2500 images.
+**accuracy = 0.9824, précision = 0.9827, recall = 0.9824**.
+Matrice de confusion : 1243 chats et 1213 chiens correctement classés, pour
+seulement 44 erreurs sur 2500 images.
 
-Principaux enseignements : le transfer learning atteint ~0.97 dès la première
-époque (contre 25 époques pour que le from scratch approche 0.93) ; pour le CNN
-from scratch, Adam (0.935) surpasse largement SGD (0.799), alors que pour le
-transfer les deux optimiseurs sont équivalents. L'analyse complète figure dans
-le notebook (section 2.7).
-
----
+Le projet intègre plusieurs techniques avancées : backbone EfficientNet-B0,
+fine-tuning progressif (la phase 2 fait passer EfficientNet+Adam de 0.9711 à
+0.9844), MixUp, early stopping, et journalisation TensorBoard. L'analyse
+complète figure dans le notebook (section 9).
 
 ## Environnement
 
-Le projet a été exécuté sur **Google Colab avec GPU T4**.
+Le projet a été exécuté sur **Google Colab avec GPU T4** (Internet activé pour télécharger les poids EfficientNet-B0 pré-entraînés).
+
+Pour installer les dépendances en local :
+
+```bash
+pip install -r requirements.txt
+```
 
 ```bash
 pip install torch torchvision scikit-learn matplotlib pandas
@@ -119,13 +122,18 @@ Le notebook est organisé en deux parties :
   (avec justification), augmentation de données, split train/validation,
   visualisation.
 - **Partie 2 — TP** : fonctions d'entraînement/évaluation, LR finder,
-  CNN from scratch (Adam + SGD), transfer learning ResNet18 (Adam + SGD),
+  CNN from scratch (Adam + SGD), transfer learning EfficientNet-B0 (Adam + SGD),
   comparaison, test final, matrice de confusion et analyse.
 
 ---
 
 ## Choix techniques
 
+- **EfficientNet-B0** : backbone moderne, bon compromis précision / paramètres.
+- **Fine-tuning progressif** : tête d'abord (backbone gelé), puis dégel des dernières couches avec un LR faible.
+- **MixUp** : mélange d'images et d'étiquettes pour régulariser le from scratch.
+- **Early stopping** : arrêt quand la validation stagne.
+- **TensorBoard** : journalisation interactive des métriques.
 - **BatchNorm** après chaque convolution : stabilise et accélère l'apprentissage.
 - **Dropout** dans la tête dense : limite le surapprentissage.
 - **Augmentation de données** (rotation, recadrage, flip) sur l'entraînement
